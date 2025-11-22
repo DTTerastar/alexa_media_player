@@ -567,6 +567,14 @@ async def setup_alexa(hass, config_entry, login_obj: AlexaLogin):
         exclude_filter = []
         include_filter = []
 
+        # Hotfix: Handle None devices response from API
+        if devices is None:
+            _LOGGER.warning(
+                "%s: Alexa API returned None for devices. Skipping device processing.",
+                hide_email(email),
+            )
+            devices = []
+
         for device in devices:
             serial = device["serialNumber"]
             dev_name = device["accountName"]
